@@ -3,7 +3,7 @@ const pool = require("../../config/db")
 
 // Find User by Email
 const findUserByEmail = async (email)=>{
-    const [rows] = await pool.query('SELECT * FORM users WHERE email = ?',[email])
+    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?',[email])
     return rows[0]||null
 }
 
@@ -13,29 +13,33 @@ const findUserByPhone = async(phone)=>{
     return rows[0]||null
 }
 
+// finding user by id 
 const findUserById = async(id)=>{
-    const [rows] = await pool.query('SELECT * FROM users WHERE id = ?',[id]),
+    const [rows] = await pool.query('SELECT * FROM users WHERE id = ?',[id])
     return rows[0]||null
 }
 
+// creating user by phone or email
 const createUser = async({name,email,phone,password_hash,role})=>{
     const [result] = await pool.query(
         'INSERT INTO users (name,email,phone,password_hash,role) VALUES (? ,? ,? ,? ,?)',
-        [name,email||null,phone||null,password_hash||null,role]
+        [name,email||null,phone||null,password_hash||null,role||'customer']
     )
     return result.insertId
 }
 
+// make user verified
 const markUserVerified = async(userId)=>{
     await pool.query("UPDATE users SET is_verified = TRUE WHERE id = ?",[userId])
 }
 
-
-const saveRefreshToken = async({userId,token,expires_at})=>{
+// make the refresh token 
+const saveRefreshToken = async({user_id,token,expires_at})=>{
     await pool.query('INSERT INTO refresh_tokens (user_id , token , expires_at) VALUES (?,?,?)',
-        [userId,token,expires_at]
+        [user_id,token,expires_at]
     )
 }
+
 
 const findRefreshToken = async(token)=>{
     const [rows] = await pool.query(

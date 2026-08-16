@@ -1,12 +1,11 @@
 const ApiError = require("../utils/ApiError")
 const {verifyAccessToken} = require("../utils/jwt")
 const redisClient  = require("../config/redis")
-const { default: API } = require("razorpay/dist/types/api")
 
 
-const authenicate = async(req ,res ,next)=>{
+const authenticate = async(req ,res ,next)=>{
     try{
-        const authHeader = req.header.authorization
+        const authHeader = req.headers.authorization
 
         if(!authHeader || !authHeader.startsWith('Bearer ')){
             return next(new ApiError(401 , "Access token missing"))
@@ -26,3 +25,6 @@ const authenicate = async(req ,res ,next)=>{
         return next(new ApiError(401,"Inavlid or Expired Token"))
     }
 }
+
+
+module.exports = {authenticate}

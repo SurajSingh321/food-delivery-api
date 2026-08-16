@@ -1,6 +1,6 @@
-const sendError = require("../utils/response")
+const {sendError} = require("../utils/response")
 
-const errorMiddleware = (err ,res, req, next)=>{
+const errorMiddleware = (err ,req,res, next)=>{
     console.error(err)
 
     if(err.isOperational){
