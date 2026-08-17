@@ -4,10 +4,13 @@ const cors  = require('cors')
 const rateLimit = require("express-rate-limit")
 const errorMiddleware = require("./middleware/error.middleware")
 const routes  = require('./routes/index')
+const morgan = require("morgan")
+
 
 
 // security
 const app = express()
+app.use(morgan("dev"))
 app.use(helmet())
 app.use(cors())
 
