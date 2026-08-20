@@ -28,6 +28,7 @@ const registerWithEmail = async({name,email,password})=>{
 
     const password_hash = await hashPassword(password)
     const userId = await createUser({name,email, password_hash})
+    await markUserVerified(userId)    // its temporay 
     return userId
 }
 // Phone Registration — sends OTP
